@@ -1,0 +1,16 @@
+{
+  "name": "backend-client",
+  "version": "1.0.0",
+  "description": "Backend Client for Azonix",
+  "main": "start.js",
+  "scripts": {
+    "dev": "nodemon start.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "nodemon": "^2.0.20",
+    "socket.io": "^4.5.4"
+  }
+}
