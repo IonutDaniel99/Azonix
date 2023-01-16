@@ -1,25 +1,27 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { console_service_start } from './constants.js';
 
-import { console_microservice_port } from '../../configs/microservices_ports.js';
+import { SERVICE_NAMES } from '../../common/constants.js';
+import { CONSOLE_MICROSERVICE_PORT as consolePort } from '../../configs/microservices_ports.js';
+import { consoleWithTimeStamp } from '../../utils/console_override.js';
 
-const SERVICE_NAME = "Console"
-
-const app = express()
+const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+const service_name = SERVICE_NAMES['CONSOLE'];
 
 app.get('/', (req, res) => {
-    console.log(`Someone join on ${SERVICE_NAME}`)
-    res.sendStatus(200)
-});
-  
-io.on('connection', (socket) => {
-    console.log('a user connected');
+    consoleWithTimeStamp(`Someone join on ${service_name}`);
+    res.sendStatus(200);
 });
 
-server.listen(console_microservice_port, () => {
-    console.log(`${SERVICE_NAME} service start succsesfuly on ${console_microservice_port} port.`);
+io.on('connection', (socket) => {
+    consoleWithTimeStamp('a user connected');
+});
+
+server.listen(consolePort, () => {
+    consoleWithTimeStamp(`${console_service_start(service_name, consolePort)}`);
 });

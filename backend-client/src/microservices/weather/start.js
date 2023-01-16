@@ -1,24 +1,27 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { SERVICE_NAMES } from '../../common/constants.js';
 // Configs Imports
-import {weather_microservice_port } from '../../configs/microservices_ports.js';
+import { WEATHER_MICROSERVICE_PORT as weatherPort } from '../../configs/microservices_ports.js';
+import { consoleWithTimeStamp } from '../../utils/console_override.js';
+import { weather_service_start } from './constants.js';
 
-const SERVICE_NAME = "Weather"
-
-const app = express()
+const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+const service_name = SERVICE_NAMES['WEATHER'];
+
 app.get('/', (req, res) => {
-    console.log(`Someone join on ${SERVICE_NAME}`)
-    res.sendStatus(200)
-});
-  
-io.on('connection', (socket) => {
-    console.log('a user connected');
+    consoleWithTimeStamp(`Someone join on ${service_name}`);
+    res.sendStatus(200);
 });
 
-server.listen(weather_microservice_port, () => {
-    console.log(`${SERVICE_NAME} service start succsesfuly on ${weather_microservice_port} port.`);
+io.on('connection', (socket) => {
+    consoleWithTimeStamp('a user connected');
+});
+
+server.listen(weatherPort, () => {
+    consoleWithTimeStamp(`${weather_service_start(service_name, weatherPort)}`);
 });

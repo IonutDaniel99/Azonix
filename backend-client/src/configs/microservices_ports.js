@@ -1,5 +1,5 @@
 // 5800-5850
 
-export const console_microservice_port = 5800
-export const weather_microservice_port = 5801
-export const physical_machine_microservice_port = 5802
+export const CONSOLE_MICROSERVICE_PORT = 5800;
+export const WEATHER_MICROSERVICE_PORT = 5801;
+export const PHYSICAL_MACHINE_MICROSERVICE_PORT = 5802;
