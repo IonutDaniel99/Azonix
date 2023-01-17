@@ -1,15 +1,15 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { console_service_start } from './constants.js';
 
 import { SERVICE_NAMES } from '../../common/constants.js';
-import { CONSOLE_MICROSERVICE_PORT as consolePort } from '../../configs/microservices_ports.js';
+import { CONSOLE_MICROSERVICE_PORT as consolePort, CORS_CONFIGURATION } from '../../configs/microservices_configs.js';
+import { console_service_start } from './constants.js';
 import { consoleWithTimeStamp } from '../../utils/console_override.js';
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, CORS_CONFIGURATION);
 
 const service_name = SERVICE_NAMES['CONSOLE'];
 
@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     consoleWithTimeStamp('a user connected');
+    // setInterval(() => {
+    //     const date = new Date();
+    //     io.emit('actualSeconds', date.getSeconds());
+    // }, 1000);
 });
 
 server.listen(consolePort, () => {

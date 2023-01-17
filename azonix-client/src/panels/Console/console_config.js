@@ -1,0 +1,1 @@
+export const CONSOLE_SOCKET_IO_ADDRESS = 'http://localhost:5800/'
