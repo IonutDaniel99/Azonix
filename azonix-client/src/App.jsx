@@ -1,21 +1,20 @@
-import PanelProvider from './common/PageProvider/PanelProvider/PanelProvider';
-import ContentProvider from './common/PageProvider/ContentProvider/ContentProvider';
-import ScreenFooter from './common/PageProvider/ScreenFooter/ScreenFooter';
-import ScreenHeader from './common/PageProvider/ScreenHeader/screenHeader';
-import SpringBoard from './common/PageProvider/Springboard/SpringBoard';
-
+import PanelProvider from "./common/PageProvider/PanelProvider/PanelProvider";
+import ContentProvider from "./common/PageProvider/ContentProvider/ContentProvider";
+import ScreenFooter from "./common/PageProvider/ScreenFooter/ScreenFooter";
+import ScreenHeader from "./common/PageProvider/ScreenHeader/ScreenHeader";
+import Springboard from "./common/PageProvider/Springboard/Springboard";
 
 function App() {
-  return (
-    <div class='h-screen w-screen'>
-      <ScreenHeader />
-      <ContentProvider>
-        <SpringBoard />
-        <PanelProvider />
-      </ContentProvider>
-      <ScreenFooter />
-    </div>
-  );
+    return (
+        <div className="h-screen w-screen">
+            <ScreenHeader />
+            <ContentProvider>
+                <Springboard />
+                <PanelProvider />
+            </ContentProvider>
+            <ScreenFooter />
+        </div>
+    );
 }
 
 export default App;
