@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout"
 import { SCREEN_MAPPER } from './screenMapper'
@@ -15,17 +15,12 @@ export default class PanelProvider extends React.Component {
     }
 
     static defaultProps = {
-        className: "layout",
-        rowHeight: 130,
         onLayoutChange: function () { },
-        cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     };
 
     state = {
         currentBreakpoint: "lg",
-        compactType: 'vertical',
-        mounted: false,
-        layouts: {}
+        mounted: true,
     };
 
     componentDidMount() {
@@ -40,7 +35,6 @@ export default class PanelProvider extends React.Component {
     }
 
     onRemoveItem(i) {
-        console.log("removing", i);
         this.setState({ items: _.reject(this.state.items, { i: i }) });
     }
 
@@ -50,18 +44,18 @@ export default class PanelProvider extends React.Component {
         this.setState({
             items: this.state.items.concat({
                 i: screen.id + Math.random(),
-                x: (this.state.items.length * 4),
-                y: 0,
-                w: 4,
+                x: layoutItem.x,
+                y: layoutItem.y,
+                w: 6,
                 h: 2,
                 panelName: screen.panelName,
-                panelComponent: screen.panelComponent
+                panelComponent: screen.panelComponent,
+                static: true,
             }),
         });
     };
 
     createElement(el) {
-        console.log(el)
         const removeStyle = {
             position: "absolute",
             right: "2px",
@@ -70,6 +64,12 @@ export default class PanelProvider extends React.Component {
         };
         return (
             <div key={el.i} data-grid={el}>
+                <span className="text">
+                    <span className="react-grid-dragHandleExample" onMouseEnter={() => {
+                        el.static = false
+                        console.log(el.static)
+                    }}>[DRAG HERE]</span>
+                </span>
                 <span
                     className="remove"
                     style={removeStyle}
@@ -78,6 +78,7 @@ export default class PanelProvider extends React.Component {
                     x
                 </span>
                 {el.panelComponent}
+
             </div>
         );
     }
@@ -86,23 +87,25 @@ export default class PanelProvider extends React.Component {
     render() {
         return (
             <div
-                className="h-full ml-20 overflow-hidden bg-red-400"
+                className="w-auto h-full ml-20 overflow-x-hidden overflow-y-auto bg-red-400"
             >
                 <ResponsiveReactGridLayout
                     {...this.props}
-                    isBounded={true}
-                    layouts={this.state.layouts}
+                    rowHeight={200}
+                    width={200}
+                    layouts={{}}
                     onBreakpointChange={this.onBreakpointChange}
                     onDrop={this.onDrop}
                     measureBeforeMount={false}
                     useCSSTransforms={this.state.mounted}
-                    compactType={this.state.compactType}
                     preventCollision={!this.state.compactType}
                     isDroppable={true}
+                    compactType={'horizontal'}
+
                 >
                     {_.map(this.state.items, el => this.createElement(el))}
                 </ResponsiveReactGridLayout>
-            </div>
+            </div >
 
         )
     }
