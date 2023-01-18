@@ -1,21 +1,24 @@
+import React from "react";
 import io from "socket.io-client";
-import { createSignal, Show } from "solid-js";
+
 import { CONSOLE_SOCKET_IO_ADDRESS } from "./console_config";
 
 const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
 
 function ConsolePanel() {
-    const [showConsole, setShowConsole] = createSignal(false);
-
     socket.on("connect", () => {
-        setShowConsole(true);
+        console.log('panelConsoleConnect')
     });
 
     socket.on("disconnect", () => {
-        setShowConsole(false);
-    });
+        console.log('panelConsoleDisConnect')
 
-    return <h2 className="text-green-600">ConsolePanel</h2>;
+    });
+    return <div className="w-full h-full bg-yellow-700">
+        <h2 className="text-black ">ConsolePanel</h2>
+    </div>
+
+
 }
 
 export default ConsolePanel;

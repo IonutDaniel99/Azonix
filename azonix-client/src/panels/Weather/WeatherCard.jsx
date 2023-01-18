@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { When } from "react-if";
 import io from "socket.io-client";
-import { createSignal, Show } from "solid-js";
 import { WEATHER_SOCKET_IO_ADDRESS } from "./weather_config";
 
 const socket = io(WEATHER_SOCKET_IO_ADDRESS);
 
 function WeatherCard() {
-    const [showWeather, setShowWeather] = createSignal(false);
+    const [showWeather, setShowWeather] = useState(false);
 
     socket.on("connect", () => {
         console.log("Connect Weather");
@@ -19,11 +19,14 @@ function WeatherCard() {
     });
 
     return (
-        <Show when={showWeather()}>
-            <div className="text-green-600 bg-yellow-500 w-20 h-20">
-                <h2 className="truncate">WeatherCard</h2>
+        <When condition={showWeather}>
+            <div className="w-20 h-20 text-green-600 bg-yellow-500"
+                draggable={true}
+                unselectable="on"
+                onDragStart={e => e.dataTransfer.setData("text/plain", "WEATHER_PANEL")}>
+                <h2 className="truncate">Weather</h2>
             </div>
-        </Show>
+        </When>
     );
 }
 
