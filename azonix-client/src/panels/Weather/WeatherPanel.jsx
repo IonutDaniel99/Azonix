@@ -1,22 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
+import { setInstance } from "./actions/weatherAction";
 
 import { WEATHER_SOCKET_IO_ADDRESS } from "./weather_config";
 
 const socket = io(WEATHER_SOCKET_IO_ADDRESS);
 
 function WeatherPanel() {
-    socket.on("connect", () => {
-        console.log('panelWConnect')
-    });
+    const dispatch = useDispatch();
+    const isConnected = useSelector(
+        (state) => state.weatherReducer.isConnected
+    );
+    useEffect(() => {
+        dispatch(setInstance(1));
+        return () => dispatch(setInstance(0));
+    }, [dispatch]);
 
-    socket.on("disconnect", () => {
-        console.log('panelWDisConnect')
-
-    });
-    return <div className="w-full h-full bg-emerald-700">
-        <h2 className="text-black ">Weather Panel</h2>
-    </div>
+    return (
+        <div className="w-full h-full bg-emerald-700">
+            <h2 className="text-black ">{isConnected}</h2>
+        </div>
+    );
 }
 
 export default WeatherPanel;

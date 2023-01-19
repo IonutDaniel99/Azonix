@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
 
 import { CONSOLE_SOCKET_IO_ADDRESS } from "./console_config";
@@ -6,19 +7,26 @@ import { CONSOLE_SOCKET_IO_ADDRESS } from "./console_config";
 const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
 
 function ConsolePanel() {
-    socket.on("connect", () => {
-        console.log('panelConsoleConnect')
-    });
+    const dispatch = useDispatch();
+    const isConnected = useSelector(
+        (state) => state.consoleReducer.isConnected
+    );
 
-    socket.on("disconnect", () => {
-        console.log('panelConsoleDisConnect')
+    useEffect(() => {
+        socket.on("actualSeconds", (arg) => {
+            console.log(arg);
+        });
 
-    });
-    return <div className="w-full h-full bg-yellow-700">
-        <h2 className="text-black ">ConsolePanel</h2>
-    </div>
+        return () => {
+            socket.off("actualSeconds");
+        };
+    }, [dispatch]);
 
-
+    return (
+        <div className="w-full h-full bg-yellow-700">
+            <h2 className="text-black ">{isConnected}</h2>
+        </div>
+    );
 }
 
 export default ConsolePanel;

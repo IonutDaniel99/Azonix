@@ -5,7 +5,6 @@ import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { SCREEN_MAPPER } from "./screenMapper";
 import ConsolePanel from "../../../panels/Console/ConsolePanel";
-import { When } from "react-if";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -18,8 +17,6 @@ export default class PanelProvider extends React.Component {
     };
 
     onBreakpointChange = (breakpoint) => {
-        console.log(breakpoint);
-        console.log(this.state.layout);
         this.setState({
             currentBreakpoint: breakpoint,
         });
@@ -30,7 +27,6 @@ export default class PanelProvider extends React.Component {
     }
 
     onDrop = (layout, layoutItem, _event) => {
-        console.log(layoutItem);
         const availableHandles = ["s", "w", "e", "n"];
         const cardData = _event.dataTransfer.getData("text/plain");
         const screen = SCREEN_MAPPER[cardData];
@@ -110,14 +106,13 @@ export default class PanelProvider extends React.Component {
     }
 
     renderDom() {
-        console.log(this.state.layout);
         return _.map(this.state.layout, (el) => this.createElement(el));
     }
 
     render() {
         return (
             <div className="h-full w-full overflow-hidden flex justify-between">
-                <div className="w-3/4 h-full ml-20 overflow-x-hidden overflow-y-auto">
+                <div className="w-full h-full ml-20 overflow-x-hidden overflow-y-auto">
                     <ResponsiveReactGridLayout
                         className="z-50"
                         {...this.props}
@@ -149,7 +144,7 @@ export default class PanelProvider extends React.Component {
                         ))}
                     </div>
                 </div>
-                <div className=" w-1/4 border-l-4 border-slate-800">
+                <div className="min-w-[400px] border-l-4 border-slate-800">
                     <ConsolePanel />
                 </div>
             </div>
