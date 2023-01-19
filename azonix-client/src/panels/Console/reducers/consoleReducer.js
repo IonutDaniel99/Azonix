@@ -4,10 +4,10 @@ import { FALSE_STRING } from "../../../utils/constants";
 const inititalState = { isConnected: FALSE_STRING };
 const consoleReducer = (state = inititalState, action) => {
     switch (action.type) {
-        case "CONNECTED": {
+        case "CONSOLE_CONNECTED": {
             return { ...state, isConnected: action.payload };
         }
-        case "DISCONNECTED": {
+        case "CONSOLE_DISCONNECTED": {
             return { ...state, isConnected: action.payload };
         }
     }

@@ -1,13 +1,13 @@
 export const setDisconnected = (condition) => {
     return {
-        type: "DISCONNECTED",
+        type: "CONSOLE_DISCONNECTED",
         payload: condition,
     };
 };
 
 export const setConnected = (condition) => {
     return {
-        type: "CONNECTED",
+        type: "CONSOLE_CONNECTED",
         payload: condition,
     };
 };
