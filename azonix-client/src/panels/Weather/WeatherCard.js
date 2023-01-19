@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { When } from "react-if";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
+import ServiceCard from "../../common/Components/ServiceCard/ServiceCard";
 import { FALSE_STRING, TRUE_STRING } from "../../utils/constants";
 import { setConnected, setDisconnected } from "./actions/weatherAction";
 import { WEATHER_SOCKET_IO_ADDRESS } from "./weather_config";
+import { TiWeatherPartlySunny } from "react-icons/ti";
 
 const socket = io(WEATHER_SOCKET_IO_ADDRESS);
 
@@ -32,18 +34,12 @@ function WeatherCard() {
 
     return (
         <When condition={showWeather}>
-            <div
-                className={`w-20 h-20 text-green-600  ${
-                    instances === 0 ? "bg-yellow-500" : "bg-red-500"
-                }`}
-                draggable={true}
-                unselectable="on"
-                onDragStart={(e) =>
-                    e.dataTransfer.setData("text/plain", "WEATHER_PANEL")
-                }
-            >
-                <h2 className="truncate">Weather</h2>
-            </div>
+            <ServiceCard
+                name={"Weather"}
+                panelType={"WEATHER_PANEL"}
+                instances={instances}
+                icon={<TiWeatherPartlySunny size={24} />}
+            />
         </When>
     );
 }

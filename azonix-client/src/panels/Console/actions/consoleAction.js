@@ -11,3 +11,10 @@ export const setConnected = (condition) => {
         payload: condition,
     };
 };
+
+export const setSinceOff = (condition) => {
+    return {
+        type: "CONSOLE_DISCONNECTED_TIMER",
+        payload: condition,
+    };
+};

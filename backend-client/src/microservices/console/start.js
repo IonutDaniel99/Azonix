@@ -20,10 +20,10 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     consoleWithTimeStamp('a user connected');
-    setInterval(() => {
-        const date = new Date().getSeconds();
-        socket.emit('actualSeconds', date);
-    }, 1000);
+    // setInterval(() => {
+    //     const date = new Date().getSeconds();
+    //     socket.emit('actualSeconds', date);
+    // }, 1000);
 });
 
 server.listen(consolePort, () => {
