@@ -4,7 +4,7 @@ import WeatherCard from "../../../panels/Weather/WeatherCard";
 
 function Springboard() {
     return (
-        <div className="z-50 absolute top-0 w-22 h-full border-r-2 border-r-slate-700 bg-zinc-900">
+        <div className="z-50 absolute top-0 w-22 h-full  bg-zinc-900">
             <ConsoleCard />
             <WeatherCard />
         </div>

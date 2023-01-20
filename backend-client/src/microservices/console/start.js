@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    consoleWithTimeStamp('a user connected');
+    consoleWithTimeStamp('a user connectedd');
     // setInterval(() => {
     //     const date = new Date().getSeconds();
     //     socket.emit('actualSeconds', date);

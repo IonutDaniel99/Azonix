@@ -10,7 +10,7 @@ function ScreenHeader() {
     );
 
     return (
-        <div className="bg-darkBlue h-7 flex gap-12">
+        <div className="bg-darkBlue h-7 flex gap-12  border-b-2 border-slate-800">
             <h2>Status</h2>
             <h2>Console: {isConsoleConnected}</h2>
             <h2>Weather: {isWeatherConnected}</h2>

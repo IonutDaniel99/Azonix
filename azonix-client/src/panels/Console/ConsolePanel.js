@@ -23,8 +23,15 @@ function ConsolePanel() {
     }, [dispatch]);
 
     return (
-        <div className="w-full h-full bg-yellow-700">
-            <h2 className="text-black ">{isConnected}</h2>
+        <div className="w-full h-full bg-neutral-900 flex flex-col">
+            <div className="w-full h-8 bg-red-900">
+                <h2 className="text-black ">{isConnected}</h2>
+            </div>
+            <div className="w-full flex-auto bg-blue-900">Content</div>
+            <div className="w-full h-10 bg-neutral-900">
+                <input className="h-full w-9/12 bg-transparent border-r-2 border-white outline-none text-ms px-2" />
+                <button className="w-3/12 bg-red-300 h-full">Send</button>
+            </div>
         </div>
     );
 }

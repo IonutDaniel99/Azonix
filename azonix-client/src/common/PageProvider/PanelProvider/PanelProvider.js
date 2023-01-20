@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/no-direct-mutation-state */
-import React, { createRef } from "react";
+import React from "react";
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { SCREEN_MAPPER } from "./screenMapper";
@@ -72,27 +72,13 @@ export default class PanelProvider extends React.Component {
 
     createElement(el) {
         return (
-            <div key={el.i} data-grid={el} className={"z-[60]"}>
-                <div
-                    style={{
-                        height: 28,
-                        width: "100%",
-                        background: "#000",
-                    }}
-                >
-                    <span className="text">
-                        <span className="react-grid-dragHandleExample text-white">
-                            [DRAG HERE]
-                        </span>
+            <div key={el.i} data-grid={el} className={"z-[60] p-2"}>
+                <div className="h-7 w-2/6 bg-[#202327] flex justify-between px-4">
+                    <span className="react-grid-dragHandleExample text-white">
+                        {el.panelName}
                     </span>
                     <span
-                        className="remove text-white"
-                        style={{
-                            position: "absolute",
-                            right: "2px",
-                            top: 0,
-                            cursor: "pointer",
-                        }}
+                        className="remove text-white cursor-pointer"
                         onClick={this.onRemoveItem.bind(this, el.i)}
                     >
                         x
@@ -112,7 +98,7 @@ export default class PanelProvider extends React.Component {
     render() {
         return (
             <div className="h-full w-full overflow-hidden flex justify-between">
-                <div className="w-full h-full ml-20 overflow-x-hidden overflow-y-auto">
+                <div className="w-full h-full ml-20 overflow-x-hidden overflow-y-auto  border-l-2 border-r-2 border-slate-800">
                     <ResponsiveReactGridLayout
                         className="z-50"
                         {...this.props}
@@ -124,7 +110,7 @@ export default class PanelProvider extends React.Component {
                         preventCollision={!this.state.compactType}
                         onBreakpointChange={this.onBreakpointChange}
                         isDroppable={true}
-                        compactType={"horizontal"}
+                        compactType={null}
                         onLayoutChange={this.onLayoutChange}
                         containerPadding={
                             this.state.layout.length === 0 ? [30, 30] : [0, 0]
@@ -144,7 +130,7 @@ export default class PanelProvider extends React.Component {
                         ))}
                     </div>
                 </div>
-                <div className="min-w-[400px] border-l-4 border-slate-800">
+                <div className="min-w-[400px]">
                     <ConsolePanel />
                 </div>
             </div>

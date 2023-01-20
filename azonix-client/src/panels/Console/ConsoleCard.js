@@ -17,22 +17,14 @@ const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
 function ConsoleCard() {
     const [showConsole, setShowConsole] = useState(false);
     const dispatch = useDispatch();
-
     useEffect(() => {
-        const timerAgoInterval = setInterval(
-            () => dispatch(setSinceOff(1)),
-            1000
-        );
-
         socket.on("connect", () => {
             dispatch(setConnected(TRUE_STRING));
-            clearInterval(timerAgoInterval);
             setShowConsole(true);
         });
 
         socket.on("disconnect", () => {
             dispatch(setDisconnected(FALSE_STRING));
-            timerAgoInterval();
             setShowConsole(false);
         });
         return () => {
