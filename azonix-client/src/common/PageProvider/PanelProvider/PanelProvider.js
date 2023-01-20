@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/no-direct-mutation-state */
 import React from "react";
-import _ from "lodash";
+import _, { uniqueId } from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { SCREEN_MAPPER } from "./screenMapper";
 import ConsolePanel from "../../../panels/Console/ConsolePanel";
@@ -13,7 +13,7 @@ export default class PanelProvider extends React.Component {
         currentBreakpoint: "lg",
         mounted: true,
         layout: [],
-        cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+        cols: { lg: 12, md: 12, sm: 6, xs: 4, xxs: 2 },
     };
 
     onBreakpointChange = (breakpoint) => {
@@ -27,13 +27,12 @@ export default class PanelProvider extends React.Component {
     }
 
     onDrop = (layout, layoutItem, _event) => {
-        const availableHandles = ["s", "w", "e", "n"];
         const cardData = _event.dataTransfer.getData("text/plain");
         const screen = SCREEN_MAPPER[cardData];
         const { x, y, w, h } = this.calculateLogic();
         this.setState({
             layout: this.state.layout.concat({
-                i: screen.id + Math.random(),
+                i: uniqueId(),
                 x: x,
                 y: y,
                 w: w,
@@ -41,7 +40,7 @@ export default class PanelProvider extends React.Component {
                 panelName: screen.panelName,
                 panelComponent: screen.panelComponent,
                 static: false,
-                resizeHandles: availableHandles,
+                // resizeHandles: availableHandles,
             }),
         });
         this.renderDom();
@@ -51,29 +50,27 @@ export default class PanelProvider extends React.Component {
         var x = 0;
         var y = 0;
         var w = 4;
-        var h = 2.8;
+        var h = 3;
+        console.log(this.state.currentBreakpoint);
         switch (this.state.currentBreakpoint) {
             case "lg":
-                const getCurrentBreakpoint =
-                    this.state.cols[this.state.currentBreakpoint];
-                if (this.state.layout.length === 6) {
-                    x = 0;
-                    y = 0;
-                    w = 4;
-                    h = 3;
-                }
+                var lastItem = this.state.layout.at(-1);
+                console.log(lastItem);
+                if (!lastItem) break;
+                x = lastItem.x !== 8 ? 4 + lastItem.x : 0;
+                y = lastItem.x === 8 ? 3 + lastItem.y : 0;
                 break;
             default:
                 break;
         }
-
+        console.log({ x, y, w, h });
         return { x, y, w, h };
     };
 
     createElement(el) {
         return (
             <div key={el.i} data-grid={el} className={"z-[60] p-2"}>
-                <div className="h-7 w-2/6 bg-[#202327] flex justify-between px-4">
+                <div className="h-7 w-2/6 bg-[#202327] flex justify-between px-4 dragMe cursor-grab active:cursor-grabbing ">
                     <span className="react-grid-dragHandleExample text-white">
                         {el.panelName}
                     </span>
@@ -94,23 +91,26 @@ export default class PanelProvider extends React.Component {
     renderDom() {
         return _.map(this.state.layout, (el) => this.createElement(el));
     }
-
     render() {
         return (
             <div className="h-full w-full overflow-hidden flex justify-between">
                 <div className="w-full h-full ml-20 overflow-x-hidden overflow-y-auto  border-l-2 border-r-2 border-slate-800">
                     <ResponsiveReactGridLayout
-                        className="z-50"
+                        className="z-50 layout"
                         {...this.props}
                         layouts={this.state.layout}
                         autoSize={true}
+                        maxRows={2}
                         onDrop={this.onDrop}
+                        onResize={this.onResize}
                         measureBeforeMount={false}
                         useCSSTransforms={this.state.mounted}
                         preventCollision={!this.state.compactType}
                         onBreakpointChange={this.onBreakpointChange}
                         isDroppable={true}
-                        compactType={null}
+                        compactType={"vertical"}
+                        draggableHandle={".dragMe"}
+                        verticalCompact={true}
                         onLayoutChange={this.onLayoutChange}
                         containerPadding={
                             this.state.layout.length === 0 ? [30, 30] : [0, 0]
@@ -130,7 +130,7 @@ export default class PanelProvider extends React.Component {
                         ))}
                     </div>
                 </div>
-                <div className="min-w-[400px]">
+                <div className="min-w-[380px]">
                     <ConsolePanel />
                 </div>
             </div>

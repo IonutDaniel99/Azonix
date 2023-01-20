@@ -9,11 +9,14 @@ function ScreenHeader() {
         (state) => state.weatherReducer.isConnected
     );
 
+    const down = "font-medium text-red-500 animate-errorEaseIn";
+    const up = "font-medium text-green-500";
+
     return (
-        <div className="bg-darkBlue h-7 flex gap-12  border-b-2 border-slate-800">
+        <div className="bg-darkBlue h-7 flex gap-12 border-b-2 border-slate-800 ">
             <h2>Status</h2>
-            <h2>Console: {isConsoleConnected}</h2>
-            <h2>Weather: {isWeatherConnected}</h2>
+            <p className={isConsoleConnected ? up : down}>Console</p>
+            <p className={isWeatherConnected ? up : down}>Weather</p>
         </div>
     );
 }
