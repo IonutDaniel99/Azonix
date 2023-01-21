@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import io from "socket.io-client";
 import { setInstance } from "./actions/weatherAction";
-
-import { WEATHER_SOCKET_IO_ADDRESS } from "./weather_config";
-
-const socket = io(WEATHER_SOCKET_IO_ADDRESS);
 
 function WeatherPanel() {
     const dispatch = useDispatch();

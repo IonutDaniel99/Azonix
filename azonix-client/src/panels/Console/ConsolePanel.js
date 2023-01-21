@@ -4,23 +4,23 @@ import io from "socket.io-client";
 
 import { CONSOLE_SOCKET_IO_ADDRESS } from "./console_config";
 
-const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
+// const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
 
 function ConsolePanel() {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const isConnected = useSelector(
         (state) => state.consoleReducer.isConnected
     );
 
-    useEffect(() => {
-        socket.on("actualSeconds", (arg) => {
-            console.log(arg);
-        });
+    // useEffect(() => {
+    //     socket.on("actualSeconds", (arg) => {
+    //         console.log(arg);
+    //     });
 
-        return () => {
-            socket.off("actualSeconds");
-        };
-    }, [dispatch]);
+    //     return () => {
+    //         socket.off("actualSeconds");
+    //     };
+    // }, [dispatch]);
 
     return (
         <div className="w-full h-full bg-neutral-900 flex flex-col">

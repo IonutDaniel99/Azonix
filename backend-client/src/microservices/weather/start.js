@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    consoleWithTimeStamp('a user connected');
+    consoleWithTimeStamp(socket.id, 'a user connected');
     io.emit('actualSeconds', () => new Date().getSeconds());
 });
 
