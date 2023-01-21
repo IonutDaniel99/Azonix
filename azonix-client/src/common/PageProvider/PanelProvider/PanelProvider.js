@@ -13,6 +13,7 @@ export default class PanelProvider extends React.Component {
         currentBreakpoint: "lg",
         mounted: true,
         layout: [],
+        items: [],
         cols: { lg: 12, md: 12, sm: 6, xs: 4, xxs: 2 },
     };
 
@@ -23,7 +24,7 @@ export default class PanelProvider extends React.Component {
     };
 
     onRemoveItem(i) {
-        this.setState({ layout: _.reject(this.state.layout, { i: i }) });
+        this.setState({ items: _.reject(this.state.items, { i: i }) });
     }
 
     onDrop = (layout, layoutItem, _event) => {
@@ -31,7 +32,7 @@ export default class PanelProvider extends React.Component {
         const screen = SCREEN_MAPPER[cardData];
         const { x, y, w, h } = this.calculateLogic();
         this.setState({
-            layout: this.state.layout.concat({
+            items: this.state.items.concat({
                 i: uniqueId(),
                 x: x,
                 y: y,
@@ -54,7 +55,7 @@ export default class PanelProvider extends React.Component {
         console.log(this.state.currentBreakpoint);
         switch (this.state.currentBreakpoint) {
             case "lg":
-                var lastItem = this.state.layout.at(-1);
+                var lastItem = this.state.items.at(-1);
                 console.log(lastItem);
                 if (!lastItem) break;
                 x = lastItem.x !== 8 ? 4 + lastItem.x : 0;
@@ -70,7 +71,7 @@ export default class PanelProvider extends React.Component {
     createElement(el) {
         return (
             <div key={el.i} data-grid={el} className={"z-[60] p-2"}>
-                <div className="h-7 w-2/6 bg-[#202327] flex justify-between px-4 dragMe cursor-grab active:cursor-grabbing ">
+                <div className="h-7 w-full bg-[#202327] flex justify-between px-4 dragMe cursor-grab active:cursor-grabbing ">
                     <span className="react-grid-dragHandleExample text-white">
                         {el.panelName}
                     </span>
@@ -89,7 +90,7 @@ export default class PanelProvider extends React.Component {
     }
 
     renderDom() {
-        return _.map(this.state.layout, (el) => this.createElement(el));
+        return _.map(this.state.items, (el) => this.createElement(el));
     }
     render() {
         return (
@@ -98,25 +99,24 @@ export default class PanelProvider extends React.Component {
                     <ResponsiveReactGridLayout
                         className="z-50 layout"
                         {...this.props}
-                        layouts={this.state.layout}
+                        layout={this.state.layout}
                         autoSize={true}
-                        maxRows={2}
                         onDrop={this.onDrop}
-                        onResize={this.onResize}
+                        onResize={this.onResizeFunc}
                         measureBeforeMount={false}
                         useCSSTransforms={this.state.mounted}
-                        preventCollision={!this.state.compactType}
+                        preventCollision={false}
                         onBreakpointChange={this.onBreakpointChange}
                         isDroppable={true}
-                        compactType={"vertical"}
+                        compactType={"horizontal"}
                         draggableHandle={".dragMe"}
                         verticalCompact={true}
-                        onLayoutChange={this.onLayoutChange}
+                        // onLayoutChange={this.onLayoutChange}
                         containerPadding={
-                            this.state.layout.length === 0 ? [30, 30] : [0, 0]
+                            this.state.items.length === 0 ? [30, 30] : [0, 0]
                         }
                         margin={
-                            this.state.layout.length === 0 ? [30, 30] : [0, 0]
+                            this.state.items.length === 0 ? [30, 30] : [0, 0]
                         }
                     >
                         {this.renderDom()}
