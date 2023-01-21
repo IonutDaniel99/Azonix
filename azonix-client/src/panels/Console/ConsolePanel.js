@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import io from "socket.io-client";
-
-import { CONSOLE_SOCKET_IO_ADDRESS } from "./console_config";
+import React from "react";
+import { useSelector } from "react-redux";
 
 // const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
 

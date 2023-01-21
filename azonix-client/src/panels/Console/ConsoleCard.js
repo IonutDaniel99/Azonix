@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import io from "socket.io-client";
-import { When } from "react-if";
 import { CONSOLE_SOCKET_IO_ADDRESS } from "./console_config";
 import { useDispatch } from "react-redux";
-import {
-    setConnected,
-    setDisconnected,
-    setSinceOff,
-} from "./actions/consoleAction";
+import { setConnected, setDisconnected } from "./actions/consoleAction";
 import { FALSE_STRING, TRUE_STRING } from "../../utils/constants";
-import ServiceCard from "../../common/Components/ServiceCard/ServiceCard";
 import { BsTerminal } from "react-icons/bs";
 
 const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
