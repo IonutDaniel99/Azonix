@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/no-direct-mutation-state */
-import React, { useState } from "react";
-import _, { uniqueId } from "lodash";
+import React, { useEffect, useState } from "react";
+import _, { get, set, uniqueId } from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { SCREEN_MAPPER } from "./screenMapper";
 import ConsolePanel from "../../../panels/Console/ConsolePanel";
@@ -9,6 +9,9 @@ import { IoMdClose } from "react-icons/io";
 import { BiCog, BiMove } from "react-icons/bi";
 import { BsArrowsMove } from "react-icons/bs";
 import { Dropdown } from "antd";
+import * as RxIcon from "react-icons/rx";
+
+import { getObjectByChildrensValue } from "../../../utils/helpers";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -18,19 +21,57 @@ function PanelProvider() {
     const [items, setItems] = useState([]);
     const [layout, setLayout] = useState([]);
 
-    const [panelSettings, setPanelSettings] = useState({
+    const [panelSettings] = useState({
         location: [
             {
                 label: (
-                    <span onClick={(e) => console.log("kakutza")}>kata</span>
+                    <span className="flex items-center justify-between w-28">
+                        <RxIcon.RxArrowUp />
+                        <p>Top</p>
+                    </span>
                 ),
-                key: 0,
-                name: "tldddddddddd",
+                key: 1,
+                title: "Top",
             },
             {
-                label: "t",
+                label: (
+                    <span className="flex items-center justify-between">
+                        <RxIcon.RxArrowLeft />
+                        <p>Left</p>
+                    </span>
+                ),
                 key: 2,
-                name: "t",
+                title: "Left",
+            },
+            {
+                label: (
+                    <span className="flex items-center justify-between">
+                        <RxIcon.RxArrowRight />
+                        <p>Right</p>
+                    </span>
+                ),
+                key: 3,
+                title: "Right",
+            },
+            {
+                label: (
+                    <span className="flex items-center justify-between">
+                        <RxIcon.RxArrowTopLeft />
+                        <p>TLeft</p>
+                    </span>
+                ),
+                key: 4,
+                title: "TLeft",
+            },
+            {
+                label: (
+                    <span className="flex items-center justify-between">
+                        <RxIcon.RxArrowTopRight />
+                        <p>TRight</p>
+                    </span>
+                ),
+                key: 5,
+                title: "TRight",
             },
         ],
     });
@@ -46,14 +87,14 @@ function PanelProvider() {
     const onDrop = (layout, layoutItem, _event) => {
         const cardData = _event.dataTransfer.getData("text/plain");
         const screen = SCREEN_MAPPER[cardData];
-        const { x, y, w, h } = calculateLogic();
+        const { w, h } = calculateLogic();
         setItems(
             items.concat({
-                i: uniqueId(),
-                x: x,
-                y: y,
-                w: w,
-                h: h,
+                i: screen.id + uniqueId(),
+                x: layoutItem.x,
+                y: layoutItem.y,
+                w: 12,
+                h: 3,
                 panelName: screen.panelName,
                 panelComponent: screen.panelComponent,
                 static: false,
@@ -63,24 +104,43 @@ function PanelProvider() {
         renderDom();
     };
 
-    const onResizeFunc = (curr, all) => {
-        console.log(curr);
-        setLayout(curr);
-    };
+    const onResizeFunc = (curr, all) => {};
 
     const calculateLogic = () => {
-        var x = 0;
-        var y = 0;
-        var w = 4;
+        var w = 12;
         var h = 3;
-        if (items.length === 0) return { x, y, w, h };
+        if (items.length < 2) return { w, h };
         switch (currentBreakpoint) {
             case "lg":
                 break;
             default:
                 break;
         }
-        return { x, y, w, h };
+        return { w, h };
+    };
+
+    const resizePanelContainer = (location, id) => {
+        var x,
+            y,
+            w,
+            h = 0;
+        switch (location) {
+            case "TRight":
+                x = 12 - 3;
+                y = 6 - 3;
+                w = 4;
+                h = 3;
+                break;
+
+            default:
+                break;
+        }
+        const item = _.find(items, { i: id });
+        const index = _.findIndex(items, (it) => {
+            return it.i === item.i;
+        });
+        // setItems([...items, { ...item, x: x, y: y, w: w, h: h }]);
+        // console.log(items, "d");
     };
 
     const createElement = (el) => {
@@ -97,9 +157,18 @@ function PanelProvider() {
                         <span className="text-white cursor-pointer">
                             <Dropdown
                                 trigger={["click"]}
-                                menu={{ items: panelSettings.location }}
+                                menu={{
+                                    items: panelSettings.location,
+                                    onClick: ({ item }) => {
+                                        resizePanelContainer(
+                                            item.props.title,
+                                            el.i
+                                        );
+                                    },
+                                }}
+                                key={el.i}
                             >
-                                <BiCog onClick={(e) => e.preventDefault()} />
+                                <BiCog />
                             </Dropdown>
                         </span>
                         <span
@@ -131,13 +200,13 @@ function PanelProvider() {
                     layout={layout}
                     autoSize={true}
                     onDrop={(layout, item, e) => onDrop(layout, item, e)}
-                    // onResize={() => onResizeFunc()}
+                    onResize={() => onResizeFunc()}
                     measureBeforeMount={false}
                     useCSSTransforms={true}
                     preventCollision={false}
                     onBreakpointChange={() => onBreakpointChange()}
                     isDroppable={true}
-                    compactType={"horizontal"}
+                    // compactType={"horizontal"}
                     draggableHandle={".dragMe"}
                     verticalCompact={true}
                     onLayoutChange={(curr, all) => onResizeFunc(curr, all)}
