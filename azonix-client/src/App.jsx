@@ -4,10 +4,11 @@ import ScreenFooter from "./common/PageProvider/ScreenFooter/ScreenFooter";
 import ScreenHeader from "./common/PageProvider/ScreenHeader/ScreenHeader";
 import Springboard from "./common/PageProvider/Springboard/Springboard";
 import { ConfigProvider } from "antd";
+import ConsolePanel from "./panels/Console/ConsolePanel";
 
 function App() {
     return (
-        <div className="h-screen w-screen">
+        <div className="h-full w-full flex flex-col overflow-hidden">
             <ConfigProvider
                 theme={{
                     components: {
@@ -21,6 +22,7 @@ function App() {
                 <ContentProvider>
                     <Springboard />
                     <PanelProvider />
+                    <ConsolePanel />
                 </ContentProvider>
                 <ScreenFooter />
             </ConfigProvider>

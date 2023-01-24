@@ -1,7 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 function ScreenFooter() {
+    const isFooterVisible = useSelector(
+        (state) => state.headerReducer.isFooterVisible
+    );
+
     return (
-        <div className="bg-darkBlue h-7 border-t-2 border-slate-800">
+        <div
+            style={{ visibility: isFooterVisible ? "hidden" : "visible" }}
+            className="bg-darkBlue h-7 border-t-2 border-slate-800 absolute z-[110] bottom-0 w-full"
+        >
             <h2>ScreenFooter</h2>
         </div>
     );

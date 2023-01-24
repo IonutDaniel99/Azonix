@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import _, { get, set, uniqueId } from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { SCREEN_MAPPER } from "./screenMapper";
-import ConsolePanel from "../../../panels/Console/ConsolePanel";
+
 import { IoMdClose } from "react-icons/io";
 import { BiCog, BiMove } from "react-icons/bi";
 import { BsArrowsMove } from "react-icons/bs";
@@ -88,27 +88,25 @@ function PanelProvider() {
         const cardData = _event.dataTransfer.getData("text/plain");
         const screen = SCREEN_MAPPER[cardData];
         const { w, h } = calculateLogic();
-        const uniqId = Math.floor((screen.id + uniqueId()) * Math.random())
-        setItems(
-            (prevState) => ({
-                ...prevState,
-                [uniqId]: {
-                    i: uniqId,
-                    x: layoutItem.x,
-                    y: layoutItem.y,
-                    w: w,
-                    h: h,
-                    panelName: screen.panelName,
-                    panelComponent: screen.panelComponent,
-                    static: false,
-                    // resizeHandles: availableHandles,
-                }
-            })
-        );
+        const uniqId = Math.floor((screen.id + uniqueId()) * Math.random());
+        setItems((prevState) => ({
+            ...prevState,
+            [uniqId]: {
+                i: uniqId,
+                x: layoutItem.x,
+                y: layoutItem.y,
+                w: w,
+                h: h,
+                panelName: screen.panelName,
+                panelComponent: screen.panelComponent,
+                static: false,
+                // resizeHandles: availableHandles,
+            },
+        }));
         renderDom();
     };
 
-    const onResizeFunc = (curr, all) => { };
+    const onResizeFunc = (curr, all) => {};
 
     const calculateLogic = () => {
         var w = 4;
@@ -139,16 +137,16 @@ function PanelProvider() {
             default:
                 break;
         }
-        console.log(layout)
+        console.log(layout);
         const item = _.find(layout, { i: id });
-        const index = item.i
-        console.log({ layout, item, index })
-        const mod_item = { ...item, x: x, y: y, w: w, h: h }
+        const index = item.i;
+        console.log({ layout, item, index });
+        const mod_item = { ...item, x: x, y: y, w: w, h: h };
         setLayout({
             ...layout,
-            [index]: mod_item
-        })
-        console.log('layout', layout);
+            [index]: mod_item,
+        });
+        console.log("layout", layout);
     };
 
     const createElement = (el) => {
@@ -198,42 +196,34 @@ function PanelProvider() {
         return _.map(items, (el) => createElement(el));
     };
     return (
-        <div className="flex justify-between w-full h-full overflow-hidden">
-            <div className="w-full h-full pr-[1px] ml-20 overflow-x-hidden overflow-y-auto border-l-2 border-r-2 border-slate-800 layout-container-scrollbar">
-                <ResponsiveReactGridLayout
-                    className="z-50 layout"
-                    breakpoint={currentBreakpoint}
-                    maxRows={6}
-                    cols={cols}
-                    layout={layout}
-                    autoSize={true}
-                    onDrop={(layout, item, e) => onDrop(layout, item, e)}
-                    onResize={() => onResizeFunc()}
-                    measureBeforeMount={false}
-                    useCSSTransforms={true}
-                    preventCollision={false}
-                    onBreakpointChange={() => onBreakpointChange()}
-                    isDroppable={true}
-                    // compactType={"horizontal"}
-                    draggableHandle={".dragMe"}
-                    verticalCompact={true}
-                    onLayoutChange={(curr, all) => onResizeFunc(curr, all)}
-                    containerPadding={items.length === 0 ? [30, 30] : [0, 0]}
-                    margin={items.length === 0 ? [30, 30] : [0, 0]}
-                >
-                    {renderDom()}
-                </ResponsiveReactGridLayout>
-                <div className="panelProvider -z-50">
-                    {_.map(Array(20), (i, index) => (
-                        <span
-                            key={index}
-                            className={`meteor-${index + 1}`}
-                        ></span>
-                    ))}
-                </div>
-            </div>
-            <div className="min-w-[380px]">
-                <ConsolePanel />
+        <div className="w-9/12 h-full pr-[1px] overflow-x-hidden overflow-y-auto border-l-2 border-r-2 border-slate-800 layout-container-scrollbar">
+            <ResponsiveReactGridLayout
+                className="z-50 layout"
+                breakpoint={currentBreakpoint}
+                maxRows={6}
+                cols={cols}
+                layout={layout}
+                autoSize={true}
+                onDrop={(layout, item, e) => onDrop(layout, item, e)}
+                onResize={() => onResizeFunc()}
+                measureBeforeMount={false}
+                useCSSTransforms={true}
+                preventCollision={false}
+                onBreakpointChange={() => onBreakpointChange()}
+                isDroppable={true}
+                // compactType={"horizontal"}
+                draggableHandle={".dragMe"}
+                verticalCompact={true}
+                onLayoutChange={(curr, all) => onResizeFunc(curr, all)}
+                containerPadding={items.length === 0 ? [30, 30] : [0, 0]}
+                margin={items.length === 0 ? [30, 30] : [0, 0]}
+            >
+                {renderDom()}
+            </ResponsiveReactGridLayout>
+            <div className="panelProvider -z-50">
+                {_.map(Array(20), (i, index) => (
+                    <span key={index} className={`meteor-${index + 1}`}></span>
+                ))}
             </div>
         </div>
     );

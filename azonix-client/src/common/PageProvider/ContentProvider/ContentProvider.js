@@ -1,10 +1,6 @@
 import React from "react";
 function ContentProvider({ children }) {
-    return (
-        <div className="h-[calc(100%-56px)] min-w-[calc(100%-80px)] relative">
-            {children}
-        </div>
-    );
+    return <div className="h-full w-full flex overflow-hidden">{children}</div>;
 }
 
 export default ContentProvider;
