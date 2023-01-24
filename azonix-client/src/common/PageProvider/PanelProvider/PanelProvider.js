@@ -88,26 +88,30 @@ function PanelProvider() {
         const cardData = _event.dataTransfer.getData("text/plain");
         const screen = SCREEN_MAPPER[cardData];
         const { w, h } = calculateLogic();
+        const uniqId = Math.floor((screen.id + uniqueId()) * Math.random())
         setItems(
-            items.concat({
-                i: screen.id + uniqueId(),
-                x: layoutItem.x,
-                y: layoutItem.y,
-                w: 12,
-                h: 3,
-                panelName: screen.panelName,
-                panelComponent: screen.panelComponent,
-                static: false,
-                // resizeHandles: availableHandles,
+            (prevState) => ({
+                ...prevState,
+                [uniqId]: {
+                    i: uniqId,
+                    x: layoutItem.x,
+                    y: layoutItem.y,
+                    w: w,
+                    h: h,
+                    panelName: screen.panelName,
+                    panelComponent: screen.panelComponent,
+                    static: false,
+                    // resizeHandles: availableHandles,
+                }
             })
         );
         renderDom();
     };
 
-    const onResizeFunc = (curr, all) => {};
+    const onResizeFunc = (curr, all) => { };
 
     const calculateLogic = () => {
-        var w = 12;
+        var w = 4;
         var h = 3;
         if (items.length < 2) return { w, h };
         switch (currentBreakpoint) {
@@ -135,20 +139,24 @@ function PanelProvider() {
             default:
                 break;
         }
-        const item = _.find(items, { i: id });
-        const index = _.findIndex(items, (it) => {
-            return it.i === item.i;
-        });
-        // setItems([...items, { ...item, x: x, y: y, w: w, h: h }]);
-        // console.log(items, "d");
+        console.log(layout)
+        const item = _.find(layout, { i: id });
+        const index = item.i
+        console.log({ layout, item, index })
+        const mod_item = { ...item, x: x, y: y, w: w, h: h }
+        setLayout({
+            ...layout,
+            [index]: mod_item
+        })
+        console.log('layout', layout);
     };
 
     const createElement = (el) => {
         return (
             <div key={el.i} data-grid={el} className={"z-[60]"}>
                 <div className="h-8 w-full bg-darkBlue flex items-center justify-between pt-[2px]">
-                    <div className="h-7 flex items-center w-2/6 dragMe cursor-grab active:cursor-grabbing bg-blue-900">
-                        <span className="react-grid-dragHandleExample text-white flex items-center justify-between w-full pr-2">
+                    <div className="flex items-center w-2/6 bg-blue-900 h-7 dragMe cursor-grab active:cursor-grabbing">
+                        <span className="flex items-center justify-between w-full pr-2 text-white react-grid-dragHandleExample">
                             <span className="px-4">{el.panelName}</span>
                             <BsArrowsMove />
                         </span>
@@ -172,7 +180,7 @@ function PanelProvider() {
                             </Dropdown>
                         </span>
                         <span
-                            className="remove text-white cursor-pointer"
+                            className="text-white cursor-pointer remove"
                             onClick={onRemoveItem.bind(this, el.i)}
                         >
                             <IoMdClose />
@@ -190,8 +198,8 @@ function PanelProvider() {
         return _.map(items, (el) => createElement(el));
     };
     return (
-        <div className="h-full w-full overflow-hidden flex justify-between">
-            <div className="w-full h-full ml-20 overflow-x-hidden overflow-y-auto  border-l-2 border-r-2 border-slate-800">
+        <div className="flex justify-between w-full h-full overflow-hidden">
+            <div className="w-full h-full pr-[1px] ml-20 overflow-x-hidden overflow-y-auto border-l-2 border-r-2 border-slate-800 layout-container-scrollbar">
                 <ResponsiveReactGridLayout
                     className="z-50 layout"
                     breakpoint={currentBreakpoint}
