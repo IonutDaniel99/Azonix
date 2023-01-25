@@ -13,7 +13,7 @@ function WeatherPanel() {
     }, [dispatch]);
 
     return (
-        <div className="w-full h-full bg-[#202327]">
+        <div className="w-full h-full bg-darkGray">
             <h2 className="text-white ">{isConnected}</h2>
         </div>
     );

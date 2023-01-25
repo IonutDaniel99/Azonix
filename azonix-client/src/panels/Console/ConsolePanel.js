@@ -29,7 +29,7 @@ function ConsolePanel() {
     // }, [dispatch]);
 
     return (
-        <div className="w-3/12 h-full bg-neutral-900 flex flex-col">
+        <div className="flex flex-col w-3/12 h-full bg-neutral-900">
             <div className="w-full h-10 gap-4 flex items-center pl-2 border-b-[1px] border-yellow-800">
                 <span
                     style={{
@@ -39,7 +39,7 @@ function ConsolePanel() {
                             : "rgb(31 41 55)",
                     }}
                     onClick={() => setInfoBadgeOn(!infoBadgeOn)}
-                    class="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold  text-white rounded-full cursor-pointer"
+                    className="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold  text-white rounded-full cursor-pointer"
                 >
                     Info
                 </span>
@@ -51,7 +51,7 @@ function ConsolePanel() {
                             : "rgb(31 41 55)",
                     }}
                     onClick={() => setUpdateBadgeOn(!updateBadgeOn)}
-                    class="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold text-white rounded-full cursor-pointer"
+                    className="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold text-white rounded-full cursor-pointer"
                 >
                     Update
                 </span>
@@ -63,7 +63,7 @@ function ConsolePanel() {
                             : "rgb(31 41 55)",
                     }}
                     onClick={() => setWarningBadgeOn(!warningBadgeOn)}
-                    class="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold text-white rounded-full cursor-pointer"
+                    className="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold text-white rounded-full cursor-pointer"
                 >
                     Warning
                 </span>
@@ -75,15 +75,15 @@ function ConsolePanel() {
                             : "rgb(31 41 55)",
                     }}
                     onClick={() => setErrorBadgeOn(!errorBadgeOn)}
-                    class="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold text-white rounded-full cursor-pointer"
+                    className="text-xs inline-block py-[6px] px-3 leading-none text-center whitespace-nowrap align-middle font-bold text-white rounded-full cursor-pointer"
                 >
                     Error
                 </span>
             </div>
-            <div className="w-full flex-auto bg-gray-900">Content</div>
+            <div className="flex-auto w-full bg-gray-900">Content</div>
             <div className="w-full h-10 bg-neutral-900">
-                <input className="h-full w-9/12 bg-transparent border-r-2 border-white outline-none text-ms px-2" />
-                <button className="w-3/12 bg-red-300 h-full">Send</button>
+                <input className="w-9/12 h-full px-2 bg-transparent border-r-2 border-white outline-none text-ms" />
+                <button className="w-3/12 h-full bg-red-300">Send</button>
             </div>
         </div>
     );

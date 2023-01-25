@@ -106,7 +106,7 @@ function PanelProvider() {
         renderDom();
     };
 
-    const onResizeFunc = (curr, all) => {};
+    const onResizeFunc = (curr, all) => { };
 
     const calculateLogic = () => {
         var w = 4;
@@ -152,8 +152,8 @@ function PanelProvider() {
     const createElement = (el) => {
         return (
             <div key={el.i} data-grid={el} className={"z-[60]"}>
-                <div className="h-8 w-full bg-darkBlue flex items-center justify-between pt-[2px]">
-                    <div className="flex items-center w-2/6 bg-blue-900 h-7 dragMe cursor-grab active:cursor-grabbing">
+                <div className="h-8 w-full bg-darkBlue flex items-center justify-between pt-[3px]">
+                    <div className="flex items-center w-2/6 bg-darkGray h-7 dragMe cursor-grab active:cursor-grabbing">
                         <span className="flex items-center justify-between w-full pr-2 text-white react-grid-dragHandleExample">
                             <span className="px-4">{el.panelName}</span>
                             <BsArrowsMove />

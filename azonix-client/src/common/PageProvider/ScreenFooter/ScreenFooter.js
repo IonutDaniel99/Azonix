@@ -7,7 +7,7 @@ function ScreenFooter() {
 
     return (
         <div
-            style={{ visibility: isFooterVisible ? "hidden" : "visible" }}
+            style={{ visibility: isFooterVisible ? "visible" : "hidden" }}
             className="bg-darkBlue h-7 border-t-2 border-slate-800 absolute z-[110] bottom-0 w-full"
         >
             <h2>ScreenFooter</h2>

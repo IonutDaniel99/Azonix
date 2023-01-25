@@ -5,6 +5,7 @@ module.exports = {
         extend: {
             colors: {
                 darkBlue: "#16181a",
+                darkGray: "#202327",
             },
             keyframes: {
                 wave: {
