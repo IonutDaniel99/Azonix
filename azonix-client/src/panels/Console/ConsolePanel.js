@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
 
 import { CONSOLE_SOCKET_IO_ADDRESS } from "./console_config";
+import { WEATHER_SOCKET_IO_ADDRESS } from "../Weather/weather_config";
+import InfoLine from "./components/InfoLine";
 
-// const socket = io(CONSOLE_SOCKET_IO_ADDRESS);
+const socket_console = io(CONSOLE_SOCKET_IO_ADDRESS);
+const weather_console = io(WEATHER_SOCKET_IO_ADDRESS);
 
 function ConsolePanel() {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+
+    const [consoleStatus, setConsoleStatus] = useState([])
 
     const [infoBadgeOn, setInfoBadgeOn] = useState(false);
     const [updateBadgeOn, setUpdateBadgeOn] = useState(false);
@@ -17,19 +22,32 @@ function ConsolePanel() {
     const isConnected = useSelector(
         (state) => state.consoleReducer.isConnected
     );
-    console.log(isConnected);
-    // useEffect(() => {
-    //     socket.on("actualSeconds", (arg) => {
-    //         console.log(arg);
-    //     });
+    useEffect(() => {
+        socket_console.on("consoleStatusUpdate", (obj) => {
+            setConsoleStatus([...consoleStatus, obj])
+        });
+        weather_console.on("weatherStatusUpdate", (obj) => {
+            setConsoleStatus([...consoleStatus, obj])
+        });
 
-    //     return () => {
-    //         socket.off("actualSeconds");
-    //     };
-    // }, [dispatch]);
+        console.log(consoleStatus)
+        return () => {
+            socket_console.off("consoleStatusUpdate");
+            weather_console.off("weatherStatusUpdate");
+        };
+    }, [consoleStatus]);
+
+
+    const consoleContent = useMemo(() => {
+        return consoleStatus
+            .map(x => {
+                return <InfoLine data={x} />
+            })
+    }, [consoleStatus])
+
 
     return (
-        <div className="flex flex-col w-3/12 h-full bg-neutral-900">
+        <div className="flex flex-col min-w-[400px] h-full bg-neutral-900">
             <div className="w-full h-10 gap-4 flex items-center pl-2 border-b-[1px] border-yellow-800">
                 <span
                     style={{
@@ -80,7 +98,7 @@ function ConsolePanel() {
                     Error
                 </span>
             </div>
-            <div className="flex-auto w-full bg-gray-900">Content</div>
+            <div className="flex-auto w-full bg-gray-900">{consoleContent}</div>
             <div className="w-full h-10 bg-neutral-900">
                 <input className="w-9/12 h-full px-2 bg-transparent border-r-2 border-white outline-none text-ms" />
                 <button className="w-3/12 h-full bg-red-300">Send</button>

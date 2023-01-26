@@ -8,6 +8,7 @@ import { SERVICE_NAMES } from '../../common/constants.js';
 import { CORS_CONFIGURATION, WEATHER_MICROSERVICE_PORT as weatherPort } from '../../configs/microservices_configs.js';
 import { consoleWithTimeStamp } from '../../utils/console_override.js';
 import { weather_service_start } from './constants.js';
+import { objectToSendFunc } from '../../utils/data_send.js';
 
 const app = express();
 const server = createServer(app);
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     consoleWithTimeStamp(socket.id, 'a user connected');
-    io.emit('actualSeconds', () => new Date().getSeconds());
+    socket.emit('weatherStatusUpdate', objectToSendFunc("info", "Weather service start!", service_name));
 });
 
 server.listen(weatherPort, () => {
